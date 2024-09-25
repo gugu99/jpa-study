@@ -61,6 +61,7 @@ public class UserService {
     }
 
     // 회원정보 수정
+    @Transactional
     public UserResponse updateUser(String name, Long id) {
         // 회원정보가 있는지 확인
         User user = userRepository.findById(id)
