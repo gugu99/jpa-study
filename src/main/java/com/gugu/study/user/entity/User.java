@@ -13,10 +13,16 @@ public class User {
     private Long id;
 
     private String username;
+
+    @Setter
+    private String name;
+
+    @Setter
     private String password;
 
-    public User(String username, String password) {
+    public User(String username, String name, String password) {
         this.username = username;
+        this.name = name;
         this.password = password;
     }
 }

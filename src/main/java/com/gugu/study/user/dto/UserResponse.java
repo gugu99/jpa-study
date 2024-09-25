@@ -7,8 +7,12 @@ import lombok.ToString;
 @Getter
 @ToString
 public class UserResponse {
-    private Long id;
     private String username;
+    private String name;
 
+    public UserResponse(User user) {
+        this.username = user.getUsername();
+        this.name = user.getName();
+    }
 
 }

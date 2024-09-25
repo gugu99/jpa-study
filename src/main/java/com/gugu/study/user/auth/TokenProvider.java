@@ -38,8 +38,8 @@ public class TokenProvider {
                 .setIssuer(jwtProperties.getIssuer())
                 .setIssuedAt(now)
                 .setExpiration(expiry)
-                .setSubject(user.getUsername())
-                .claim("id", user.getId())
+                .setSubject(String.valueOf(user.getId()))
+                .claim("username", user.getUsername())
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();
     }
