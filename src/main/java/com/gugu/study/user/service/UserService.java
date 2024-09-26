@@ -67,7 +67,6 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("회원정보가 존재하지 않습니다."));
 
-        // 업데이트 안됨...
         user.setName(name);
 
         return new UserResponse(user);
