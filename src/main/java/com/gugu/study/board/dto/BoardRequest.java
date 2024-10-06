@@ -6,6 +6,6 @@ import lombok.ToString;
 @Getter
 @ToString
 public class BoardRequest {
-    private String boardTitle;
-    private String boardContent;
+    private String title;
+    private String content;
 }

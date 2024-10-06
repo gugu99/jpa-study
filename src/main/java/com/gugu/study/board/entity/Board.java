@@ -1,6 +1,7 @@
 package com.gugu.study.board.entity;
 
 import com.gugu.study.board.dto.BoardRequest;
+import com.gugu.study.comm.BaseEntity;
 import com.gugu.study.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -17,25 +18,23 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "board")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Board {
+public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long boardId;
+    private Long id;
 
     //제목
     @Column(nullable = false)
-    private String boardTitle;
+    private String title;
     //내용
     @Column(nullable = false)
-    private String boardContent;
+    private String content;
     //작성일
     @CreatedDate // 엔티티가 생성될 때 생성 시간 저장
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDateTime createDate;
     //수정일
     @LastModifiedDate // 엔티티가 수정될 때 수정 시간 저장
-    @Column(name = "updated_at")
-    private String updatedAt;
+    private String updatedDate;
     //작성자 FK
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
@@ -43,7 +42,7 @@ public class Board {
     private User user;
 
     public void update(BoardRequest request) {
-        this.boardTitle = request.getBoardTitle();
-        this.boardContent = request.getBoardContent();
+        this.title = request.getTitle();
+        this.content = request.getContent();
     }
 }

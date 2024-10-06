@@ -8,4 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
+
+    // 글쓰기
+
 }
