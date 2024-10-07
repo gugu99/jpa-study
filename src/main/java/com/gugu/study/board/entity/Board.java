@@ -5,6 +5,7 @@ import com.gugu.study.comm.BaseEntity;
 import com.gugu.study.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -34,12 +35,18 @@ public class Board extends BaseEntity {
     private LocalDateTime createDate;
     //수정일
     @LastModifiedDate // 엔티티가 수정될 때 수정 시간 저장
-    private String updatedDate;
+    private LocalDateTime updatedDate;
     //작성자 FK
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
+    @Builder
+    public Board(String title, String content, User user){
+        this.title = title;
+        this.content = content;
+        this.user = user;
+    }
 
     public void update(BoardRequest request) {
         this.title = request.getTitle();
