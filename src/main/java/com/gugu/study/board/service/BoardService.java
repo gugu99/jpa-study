@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -18,6 +19,16 @@ import java.util.NoSuchElementException;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+
+    // 게시판 리스트 조회
+    public List<BoardResponse> getBoards(Long userId) {
+        // user 확인
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("잘못된 회원정보입니다."));
+
+        // 리스트 조회
+        return boardRepository.findAll().stream().map(BoardResponse::new).toList();
+    }
 
     // 게시글 등록
     @Transactional

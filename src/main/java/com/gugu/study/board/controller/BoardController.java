@@ -8,16 +8,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
 
-    // 글쓰기
+    // 게시글판 리스트 조회
+    @GetMapping("/api/board")
+    public ResponseEntity<List<BoardResponse>> getBoards(@AuthenticationPrincipal UserDetails userDetails){
+        Long userId = Long.parseLong(userDetails.getUsername());
+
+        return ResponseEntity.ok().body(boardService.getBoards(userId));
+    }
+
+    // 게시글 상세 조회
+
+    // 게시글 등록
     @PostMapping("/api/board")
     public ResponseEntity<BoardResponse> add(@RequestBody BoardRequest request,
                                              @AuthenticationPrincipal UserDetails userDetails){
@@ -26,4 +39,6 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(boardService.add(request, userId));
     }
+
+    // 게시글 수
 }
