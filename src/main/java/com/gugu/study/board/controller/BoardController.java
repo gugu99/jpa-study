@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +26,13 @@ public class BoardController {
     }
 
     // 게시글 상세 조회
+    @GetMapping("/api/board/{id}")
+    public ResponseEntity<BoardResponse> getOne(@AuthenticationPrincipal UserDetails userDetails,
+                                                @PathVariable(name = "id") Long boardId) {
+        Long userId = Long.parseLong(userDetails.getUsername());
+
+        return ResponseEntity.ok(boardService.getOne(userId, boardId));
+    }
 
     // 게시글 등록
     @PostMapping("/api/board")

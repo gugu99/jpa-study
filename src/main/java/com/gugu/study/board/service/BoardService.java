@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +27,19 @@ public class BoardService {
 
         // 리스트 조회
         return boardRepository.findAll().stream().map(BoardResponse::new).toList();
+    }
+
+    // 게시글 상세 조회
+    public BoardResponse getOne(Long userId, Long boardId){
+        // user 확인
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("잘못된 회원정보입니다."));
+
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+
+        // 게시글 조회
+        return new BoardResponse(boardRepository.getReferenceById(boardId));
     }
 
     // 게시글 등록
@@ -46,7 +58,6 @@ public class BoardService {
                         .content(boardRequest.getContent())
                         .build()
         );
-
         return new BoardResponse(board);
     }
 }
