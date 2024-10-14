@@ -1,6 +1,7 @@
 package com.gugu.study.user.auth;
 
 import com.gugu.study.user.entity.User;
+import com.gugu.study.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -21,6 +23,7 @@ import java.util.Set;
 public class TokenProvider {
 
     private final JwtProperties jwtProperties;
+    private final UserRepository userRepository;
 
     public String generateToken(User user, Duration expiredAt) {
         Date now = new Date();
@@ -58,19 +61,24 @@ public class TokenProvider {
 
     //3. 토큰 기반으로 인증 정보를 가져오는 메서드
     public Authentication getAuthentication(String token) {
-        Claims claims = getClaims(token);
+        //Claims claims = getClaims(token);
 
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
 
+        String userId = getUserId(token);
+
+        User user = userRepository.findById(Long.parseLong(userId))
+                .orElseThrow(() -> new UsernameNotFoundException("잘못된 회원정보입니다."));
+
         return new UsernamePasswordAuthenticationToken(new org.springframework
-                .security.core.userdetails.User(claims.getSubject(), "", authorities), token, authorities);
+                .security.core.userdetails.User(userId, "", authorities), token, authorities);
     }
 
     //4. 토큰 기반으로 유저 ID를 가져오는 메서드
-    public Long getUserId(String token) {
+    public String getUserId(String token) {
         Claims claims = getClaims(token);
 
-        return claims.get("id", Long.class);
+        return claims.getSubject();
     }
 
     private Claims getClaims(String token) {
