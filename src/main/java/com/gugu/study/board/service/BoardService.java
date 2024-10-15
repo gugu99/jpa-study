@@ -7,10 +7,10 @@ import com.gugu.study.board.repository.BoardRepository;
 import com.gugu.study.user.entity.User;
 import com.gugu.study.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -64,6 +64,34 @@ public class BoardService {
     }
 
     // 게시글 수정
+    @Transactional
+    public BoardResponse update(Long userId, Long boardId, BoardRequest boardRequest) {
+        // 권한 검사
+        Board board = getBoard(userId, boardId);
+
+        board.update(boardRequest);
+
+        return new BoardResponse(board);
+    }
 
     // 게시글 삭제
+    @Transactional
+    public void delete(Long userId, Long boardId) {
+        Board board = getBoard(userId, boardId);
+
+        boardRepository.delete(board);
+    }
+
+    // 권한 검사
+    public Board getBoard(Long userId, Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+
+        if(!board.getUser().getId().equals(userId)){
+            System.out.println(">>>>>>>>>>>");
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+
+        return board;
+    }
 }

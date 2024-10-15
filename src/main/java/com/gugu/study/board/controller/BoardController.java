@@ -54,6 +54,22 @@ public class BoardController {
     }
 
     // 게시글 수정
+    @PutMapping("/api/board/{id}")
+    public ResponseEntity<BoardResponse> update(@AuthenticationPrincipal UserDetails userDetails,
+                                                @PathVariable(name = "id") Long boardId,
+                                                @RequestBody BoardRequest boardRequest){
+        Long userId = Long.parseLong(userDetails.getUsername());
+
+        return ResponseEntity.ok(boardService.update(userId, boardId, boardRequest));
+    }
 
     // 게시글 삭제
+    @DeleteMapping("/api/board/{id}")
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal UserDetails userDetails,
+                                       @PathVariable(name = "id") Long boardId) {
+        Long userId = Long.parseLong(userDetails.getUsername());
+
+        boardService.delete(userId, boardId);
+        return ResponseEntity.noContent().build();
+    }
 }
