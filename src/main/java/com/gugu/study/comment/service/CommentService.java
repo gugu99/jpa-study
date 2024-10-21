@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -21,6 +23,20 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     // 특정 게시글 댓글 리스트 조회
+    public List<CommentResponse> getBoardComments(Long boardId) {
+        // 게시글 확인
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+
+        // 리스트 조회
+        return commentRepository.findAll().stream().map(CommentResponse::new).toList();
+    }
+
+    // 내 댓글 리스트 조회
+    public List<CommentResponse> getMyComments(Long userId){
+        // 리스트 조회
+        return commentRepository.findByUser_Id(userId).stream().map(CommentResponse::new).toList();
+    }
 
     // 댓글 등록
     @Transactional
