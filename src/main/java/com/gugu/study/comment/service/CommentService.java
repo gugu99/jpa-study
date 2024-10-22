@@ -9,6 +9,7 @@ import com.gugu.study.comment.repository.CommentRepository;
 import com.gugu.study.user.entity.User;
 import com.gugu.study.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +61,26 @@ public class CommentService {
         return new CommentResponse(comment);
     }
 
-    // 댓글 수정
-
     // 댓글 삭제
+    @Transactional
+    public void delete(Long userId, Long boardId, Long commentId) {
+        Comment comment = getComment(userId, boardId, commentId);
+
+        commentRepository.delete(comment);
+    }
+
+    // 권한 검사
+    public Comment getComment(Long userId, Long boardId, Long commentId) {
+        // 게시글 확인
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+
+        if(!comment.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+        return comment;
+    }
 }

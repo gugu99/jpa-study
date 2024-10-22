@@ -45,4 +45,13 @@ public class CommentController {
     }
 
     // 댓글 삭제
+    @DeleteMapping("/api/board/{boardId}/comment/{commentId}")
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal UserDetails userDetails,
+                                       @PathVariable(name = "commentId") Long commentId,
+                                       @PathVariable(name = "boardId") Long boardId) {
+        Long userId = Long.parseLong(userDetails.getUsername());
+
+        commentService.delete(userId, boardId, commentId);
+        return ResponseEntity.noContent().build();
+    }
 }
