@@ -3,11 +3,11 @@ package com.gugu.study.comment.controller;
 import com.gugu.study.comment.dto.CommentRequest;
 import com.gugu.study.comment.dto.CommentResponse;
 import com.gugu.study.comment.service.CommentService;
+import com.gugu.study.user.auth.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class CommentController {
 
     // 특정 게시글 댓글 리스트 조회
     @GetMapping("/api/board/{id}/comment")
-    public ResponseEntity<List<CommentResponse>> getBoardComments(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<List<CommentResponse>> getBoardComments(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                                                   @PathVariable(name = "id") Long boardId) {
 
         return ResponseEntity.ok(commentService.getBoardComments(boardId));
@@ -27,31 +27,28 @@ public class CommentController {
 
     // 내 댓글 리스트 조회
     @GetMapping("/api/user/comment")
-    public ResponseEntity<List<CommentResponse>> getMyComments(@AuthenticationPrincipal UserDetails userDetails) {
-        Long userId = Long.parseLong(userDetails.getUsername());
+    public ResponseEntity<List<CommentResponse>> getMyComments(@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
-        return ResponseEntity.ok(commentService.getMyComments(userId));
+        return ResponseEntity.ok(commentService.getMyComments(userPrincipal.getId()));
     }
 
     // 댓글 등록
     @PostMapping("/api/board/{id}/comment")
-    public ResponseEntity<CommentResponse> add(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<CommentResponse> add(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                                @RequestBody CommentRequest commentRequest,
                                                @PathVariable(name = "id") Long boardId) {
-        Long userId = Long.parseLong(userDetails.getUsername());
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(commentService.add(commentRequest, userId, boardId));
+                .body(commentService.add(commentRequest, userPrincipal.getId(), boardId));
     }
 
     // 댓글 삭제
     @DeleteMapping("/api/board/{boardId}/comment/{commentId}")
-    public ResponseEntity<Void> delete(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                        @PathVariable(name = "commentId") Long commentId,
                                        @PathVariable(name = "boardId") Long boardId) {
-        Long userId = Long.parseLong(userDetails.getUsername());
 
-        commentService.delete(userId, boardId, commentId);
+        commentService.delete(userPrincipal.getId(), boardId, commentId);
         return ResponseEntity.noContent().build();
     }
 }

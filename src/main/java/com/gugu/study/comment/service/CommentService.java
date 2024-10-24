@@ -81,6 +81,7 @@ public class CommentService {
         if(!comment.getUser().getId().equals(userId)) {
             throw new AccessDeniedException("접근 권한이 없습니다.");
         }
+
         return comment;
     }
 }

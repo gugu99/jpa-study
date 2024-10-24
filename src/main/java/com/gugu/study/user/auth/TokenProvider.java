@@ -70,8 +70,11 @@ public class TokenProvider {
         User user = userRepository.findById(Long.parseLong(userId))
                 .orElseThrow(() -> new UsernameNotFoundException("잘못된 회원정보입니다."));
 
-        return new UsernamePasswordAuthenticationToken(new org.springframework
-                .security.core.userdetails.User(userId, "", authorities), token, authorities);
+        return new UsernamePasswordAuthenticationToken(
+                new UserPrincipal(user),
+                "",
+                authorities
+        );
     }
 
     //4. 토큰 기반으로 유저 ID를 가져오는 메서드

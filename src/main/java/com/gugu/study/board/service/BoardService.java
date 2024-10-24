@@ -88,7 +88,6 @@ public class BoardService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
 
         if(!board.getUser().getId().equals(userId)){
-            System.out.println(">>>>>>>>>>>");
             throw new AccessDeniedException("접근 권한이 없습니다.");
         }
 
