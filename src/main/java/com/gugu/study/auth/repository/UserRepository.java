@@ -1,6 +1,6 @@
-package com.gugu.study.user.repository;
+package com.gugu.study.auth.repository;
 
-import com.gugu.study.user.entity.User;
+import com.gugu.study.auth.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

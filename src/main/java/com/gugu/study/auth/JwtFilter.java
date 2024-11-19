@@ -1,4 +1,4 @@
-package com.gugu.study.user.auth;
+package com.gugu.study.auth;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

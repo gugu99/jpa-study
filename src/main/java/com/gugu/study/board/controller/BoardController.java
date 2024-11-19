@@ -3,7 +3,7 @@ package com.gugu.study.board.controller;
 import com.gugu.study.board.dto.BoardRequest;
 import com.gugu.study.board.dto.BoardResponse;
 import com.gugu.study.board.service.BoardService;
-import com.gugu.study.user.auth.UserPrincipal;
+import com.gugu.study.auth.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

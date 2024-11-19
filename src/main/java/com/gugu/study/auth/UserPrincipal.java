@@ -1,6 +1,6 @@
-package com.gugu.study.user.auth;
+package com.gugu.study.auth;
 
-import com.gugu.study.user.entity.User;
+import com.gugu.study.auth.entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

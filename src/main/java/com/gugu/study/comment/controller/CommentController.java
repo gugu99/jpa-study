@@ -3,7 +3,7 @@ package com.gugu.study.comment.controller;
 import com.gugu.study.comment.dto.CommentRequest;
 import com.gugu.study.comment.dto.CommentResponse;
 import com.gugu.study.comment.service.CommentService;
-import com.gugu.study.user.auth.UserPrincipal;
+import com.gugu.study.auth.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

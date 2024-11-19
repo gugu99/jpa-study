@@ -1,7 +1,7 @@
-package com.gugu.study.user.auth;
+package com.gugu.study.auth;
 
-import com.gugu.study.user.entity.User;
-import com.gugu.study.user.repository.UserRepository;
+import com.gugu.study.auth.entity.User;
+import com.gugu.study.auth.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;

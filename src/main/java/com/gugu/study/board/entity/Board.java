@@ -2,7 +2,7 @@ package com.gugu.study.board.entity;
 
 import com.gugu.study.board.dto.BoardRequest;
 import com.gugu.study.comm.BaseEntity;
-import com.gugu.study.user.entity.User;
+import com.gugu.study.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

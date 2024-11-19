@@ -1,6 +1,6 @@
-package com.gugu.study.user.dto;
+package com.gugu.study.auth.dto;
 
-import com.gugu.study.user.entity.User;
+import com.gugu.study.auth.entity.User;
 import lombok.Getter;
 import lombok.ToString;
 

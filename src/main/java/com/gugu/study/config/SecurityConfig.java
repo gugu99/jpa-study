@@ -1,6 +1,6 @@
 package com.gugu.study.config;
 
-import com.gugu.study.user.auth.JwtFilter;
+import com.gugu.study.auth.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

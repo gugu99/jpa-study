@@ -1,4 +1,4 @@
-package com.gugu.study.user.entity;
+package com.gugu.study.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
